@@ -1,18 +1,14 @@
 //
-//  NFISimplePersistObject.h
+//  NFSimplePersistObject.h
 //  ExampleSimplePersist
 //
-//  Created by José Carlos on 15/2/16.
+//  Created by jcarlos on 15/2/16.
 //  Copyright © 2016 José Carlos. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-/** Response block for save object
- */
-typedef void (^UploadObjectCompletionBlock)(BOOL success);
-
-@protocol NFISimplePersistObject <NSObject>
+@protocol NFISimplePersistObjectProtocol <NSObject>
 
 @required
 
@@ -28,3 +24,12 @@ typedef void (^UploadObjectCompletionBlock)(BOOL success);
 
 @end
 
+@interface NFISimplePersistObject : NSObject
+
+#pragma mark - Encode
+
+- (void)encodeWithCoder:(NSCoder *)encoder andClass:(Class)objectClass;
+
+- (id)initWithCoder:(NSCoder *)decoder andClass:(Class)objectClass;
+
+@end

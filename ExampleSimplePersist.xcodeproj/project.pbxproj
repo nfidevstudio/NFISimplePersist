@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2CA7E4661C724EB000A9EF2E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA7E4651C724EB000A9EF2E /* User.m */; };
+		2CA7E4681C72508200A9EF2E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */; };
+		2CA7E46C1C7255BB00A9EF2E /* NFISimplePersistObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA7E46B1C7255BB00A9EF2E /* NFISimplePersistObject.m */; };
 		F2E26E531C71F569003AF54D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E521C71F569003AF54D /* main.m */; };
 		F2E26E561C71F569003AF54D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E551C71F569003AF54D /* AppDelegate.m */; };
 		F2E26E591C71F569003AF54D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E581C71F569003AF54D /* ViewController.m */; };
@@ -36,6 +39,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2CA7E4641C724EB000A9EF2E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		2CA7E4651C724EB000A9EF2E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		2CA7E46A1C7255BB00A9EF2E /* NFISimplePersistObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFISimplePersistObject.h; sourceTree = "<group>"; };
+		2CA7E46B1C7255BB00A9EF2E /* NFISimplePersistObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFISimplePersistObject.m; sourceTree = "<group>"; };
 		F2E26E4E1C71F569003AF54D /* ExampleSimplePersist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSimplePersist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2E26E521C71F569003AF54D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F2E26E541C71F569003AF54D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -54,7 +62,6 @@
 		F2E26E781C71F56A003AF54D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F2E26E851C71F59D003AF54D /* NFISimplePersist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFISimplePersist.h; sourceTree = "<group>"; };
 		F2E26E861C71F59D003AF54D /* NFISimplePersist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFISimplePersist.m; sourceTree = "<group>"; };
-		F2E26E881C71F5C5003AF54D /* NFISimplePersistObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NFISimplePersistObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA7E4681C72508200A9EF2E /* libsqlite3.0.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,9 +90,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2CA7E4631C724EA300A9EF2E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2CA7E4641C724EB000A9EF2E /* User.h */,
+				2CA7E4651C724EB000A9EF2E /* User.m */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		2CA7E4691C72557700A9EF2E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 		F2E26E451C71F569003AF54D = {
 			isa = PBXGroup;
 			children = (
+				2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */,
 				F2E26E501C71F569003AF54D /* ExampleSimplePersist */,
 				F2E26E6A1C71F569003AF54D /* ExampleSimplePersistTests */,
 				F2E26E751C71F569003AF54D /* ExampleSimplePersistUITests */,
@@ -105,6 +130,8 @@
 		F2E26E501C71F569003AF54D /* ExampleSimplePersist */ = {
 			isa = PBXGroup;
 			children = (
+				2CA7E4691C72557700A9EF2E /* Utilities */,
+				2CA7E4631C724EA300A9EF2E /* Model */,
 				F2E26E841C71F584003AF54D /* SimplePersist */,
 				F2E26E541C71F569003AF54D /* AppDelegate.h */,
 				F2E26E551C71F569003AF54D /* AppDelegate.m */,
@@ -148,9 +175,10 @@
 		F2E26E841C71F584003AF54D /* SimplePersist */ = {
 			isa = PBXGroup;
 			children = (
-				F2E26E881C71F5C5003AF54D /* NFISimplePersistObject.h */,
 				F2E26E851C71F59D003AF54D /* NFISimplePersist.h */,
 				F2E26E861C71F59D003AF54D /* NFISimplePersist.m */,
+				2CA7E46A1C7255BB00A9EF2E /* NFISimplePersistObject.h */,
+				2CA7E46B1C7255BB00A9EF2E /* NFISimplePersistObject.m */,
 			);
 			name = SimplePersist;
 			sourceTree = "<group>";
@@ -285,8 +313,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2CA7E4661C724EB000A9EF2E /* User.m in Sources */,
 				F2E26E591C71F569003AF54D /* ViewController.m in Sources */,
 				F2E26E561C71F569003AF54D /* AppDelegate.m in Sources */,
+				2CA7E46C1C7255BB00A9EF2E /* NFISimplePersistObject.m in Sources */,
 				F2E26E871C71F59D003AF54D /* NFISimplePersist.m in Sources */,
 				F2E26E531C71F569003AF54D /* main.m in Sources */,
 			);
@@ -514,6 +544,7 @@
 				F2E26E7D1C71F56A003AF54D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F2E26E7E1C71F56A003AF54D /* Build configuration list for PBXNativeTarget "ExampleSimplePersistTests" */ = {
 			isa = XCConfigurationList;
@@ -522,6 +553,7 @@
 				F2E26E801C71F56A003AF54D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		F2E26E811C71F56A003AF54D /* Build configuration list for PBXNativeTarget "ExampleSimplePersistUITests" */ = {
 			isa = XCConfigurationList;
@@ -530,6 +562,7 @@
 				F2E26E831C71F56A003AF54D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

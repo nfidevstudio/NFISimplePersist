@@ -21,7 +21,7 @@
 /**
  *  Persist the object in the data base
  */
-- (void)persistObject:(id)object withKey:(NSString *)key;
+- (void)saveObject:(id)object withKey:(NSString *)key;
 
 #pragma mark - Load methods
 

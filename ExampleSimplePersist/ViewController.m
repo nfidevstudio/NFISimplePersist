@@ -7,6 +7,8 @@
 //
 
 #import "ViewController.h"
+#import "User.h"
+#import "NFISimplePersist.h"
 
 @interface ViewController ()
 
@@ -16,7 +18,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    User *user = [[User alloc] initWithId:1 user:@"Jose" andPass:@"asdasda"];
+    [[NFISimplePersist standarSimplePersist] saveObject:user withKey:user.user];
+
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    User *user = [[NFISimplePersist standarSimplePersist] loadFirstObject];
+    
 }
 
 - (void)didReceiveMemoryWarning {
