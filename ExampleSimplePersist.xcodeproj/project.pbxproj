@@ -15,6 +15,7 @@
 		F2E26E611C71F569003AF54D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F2E26E5F1C71F569003AF54D /* LaunchScreen.storyboard */; };
 		F2E26E6C1C71F569003AF54D /* ExampleSimplePersistTests.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E6B1C71F569003AF54D /* ExampleSimplePersistTests.m */; };
 		F2E26E771C71F56A003AF54D /* ExampleSimplePersistUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E761C71F56A003AF54D /* ExampleSimplePersistUITests.m */; };
+		F2E26E871C71F59D003AF54D /* NFISimplePersist.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E861C71F59D003AF54D /* NFISimplePersist.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,9 @@
 		F2E26E721C71F569003AF54D /* ExampleSimplePersistUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExampleSimplePersistUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2E26E761C71F56A003AF54D /* ExampleSimplePersistUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ExampleSimplePersistUITests.m; sourceTree = "<group>"; };
 		F2E26E781C71F56A003AF54D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F2E26E851C71F59D003AF54D /* NFISimplePersist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFISimplePersist.h; sourceTree = "<group>"; };
+		F2E26E861C71F59D003AF54D /* NFISimplePersist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFISimplePersist.m; sourceTree = "<group>"; };
+		F2E26E881C71F5C5003AF54D /* NFISimplePersistObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NFISimplePersistObject.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +105,7 @@
 		F2E26E501C71F569003AF54D /* ExampleSimplePersist */ = {
 			isa = PBXGroup;
 			children = (
+				F2E26E841C71F584003AF54D /* SimplePersist */,
 				F2E26E541C71F569003AF54D /* AppDelegate.h */,
 				F2E26E551C71F569003AF54D /* AppDelegate.m */,
 				F2E26E571C71F569003AF54D /* ViewController.h */,
@@ -138,6 +143,16 @@
 				F2E26E781C71F56A003AF54D /* Info.plist */,
 			);
 			path = ExampleSimplePersistUITests;
+			sourceTree = "<group>";
+		};
+		F2E26E841C71F584003AF54D /* SimplePersist */ = {
+			isa = PBXGroup;
+			children = (
+				F2E26E881C71F5C5003AF54D /* NFISimplePersistObject.h */,
+				F2E26E851C71F59D003AF54D /* NFISimplePersist.h */,
+				F2E26E861C71F59D003AF54D /* NFISimplePersist.m */,
+			);
+			name = SimplePersist;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -272,6 +287,7 @@
 			files = (
 				F2E26E591C71F569003AF54D /* ViewController.m in Sources */,
 				F2E26E561C71F569003AF54D /* AppDelegate.m in Sources */,
+				F2E26E871C71F59D003AF54D /* NFISimplePersist.m in Sources */,
 				F2E26E531C71F569003AF54D /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
