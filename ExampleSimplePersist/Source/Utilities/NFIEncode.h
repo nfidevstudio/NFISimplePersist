@@ -10,4 +10,14 @@
 
 @interface NFIEncode : NSObject
 
+/**
+ * Encode the object with the given class
+ **/
++ (void)encodeWithCoder:(NSCoder *)encoder andClass:(Class)objectClass;
+
+/**
+ * Decode to object with the given class
+ **/
++ (id)initWithCoder:(NSCoder *)decoder andClass:(Class)objectClass;
+
 @end

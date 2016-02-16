@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _users = [[[NFISimplePersist standarSimplePersist] loadAllObjects] mutableCopy];
+    _users = [[[NFISimplePersist standarSimplePersist] loadAllObjectsWithClass:[User class]] mutableCopy];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -35,7 +35,7 @@
 }
 
 - (void)updateUsers {
-    _users = [[[NFISimplePersist standarSimplePersist] loadAllObjects] mutableCopy];
+    _users = [[[NFISimplePersist standarSimplePersist] loadAllObjectsWithClass:[User class]] mutableCopy];
     [_tableView reloadData];
 }
 

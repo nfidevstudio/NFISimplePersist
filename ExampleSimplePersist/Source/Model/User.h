@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "NFISimplePersistObject.h"
 
-@interface User : NFISimplePersistObject <NFISimplePersistObjectProtocol>
+@interface User : NSObject <NFISimplePersistObjectProtocol>
 
 @property (nonatomic, assign) NSInteger id;
 @property (nonatomic, copy) NSString *user;

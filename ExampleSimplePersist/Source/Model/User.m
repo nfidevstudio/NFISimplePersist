@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import "NFIEncode.h"
 
 @implementation User
 
@@ -25,11 +26,11 @@
 #pragma mark - Encode Methods
 
 - (void)encodeWithCoder:(NSCoder *)encoder {
-    [super encodeWithCoder:encoder andClass:[self class]];
+    [NFIEncode encodeWithCoder:encoder andClass:[self class]];
 }
 
 - (id)initWithCoder:(NSCoder *)decoder {
-    return [super initWithCoder:decoder andClass:[self class]];
+    return [NFIEncode initWithCoder:decoder andClass:[self class]];
 }
 
 #pragma mark - NFISimplePersistObjectProtocol

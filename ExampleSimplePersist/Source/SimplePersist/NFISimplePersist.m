@@ -207,29 +207,32 @@ NSString * const kKey = @"key";
  *  Load the object with the given key in the database. Return nil if the table is empty
  */
 - (id)loadObjectWithKey:(NSString *)key {
-    sqlite3_stmt *statement;
-    if (sqlite3_prepare_v2(_database, [[NSString stringWithFormat:kLoadWithKey,key] UTF8String], -1, &statement, nil)
-        == SQLITE_OK) {
-        while (sqlite3_step(statement) == SQLITE_ROW) {
-            char *keyDB = (char *) sqlite3_column_text(statement, 0);
-            const void *ptr = sqlite3_column_blob(statement, 1);
-            int size = sqlite3_column_bytes(statement, 1);
-            char *classDB = (char *) sqlite3_column_text(statement, 2);
-            
-            NSString *class = [[NSString alloc] initWithUTF8String:classDB];
-            NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
-            NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
-            
-            NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
-            
-            NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            [object setObject:dictionary forKey:kObject];
-            [object setObject:key forKey:kKey];
-            [object setObject:class forKey:kClass];
-            
-            return [self objectFromDictionary:object];
+    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
+        sqlite3_stmt *statement;
+        if (sqlite3_prepare_v2(_database, [[NSString stringWithFormat:kLoadWithKey,key] UTF8String], -1, &statement, nil)
+            == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                char *keyDB = (char *) sqlite3_column_text(statement, 0);
+                const void *ptr = sqlite3_column_blob(statement, 1);
+                int size = sqlite3_column_bytes(statement, 1);
+                char *classDB = (char *) sqlite3_column_text(statement, 2);
+                
+                NSString *class = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
+                NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
+                
+                NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
+                
+                NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                [object setObject:dictionary forKey:kObject];
+                [object setObject:key forKey:kKey];
+                [object setObject:class forKey:kClass];
+                
+                return [self objectFromDictionary:object];
+            }
+            sqlite3_finalize(statement);
         }
-        sqlite3_finalize(statement);
+
     }
     return nil;
 }
@@ -240,29 +243,31 @@ NSString * const kKey = @"key";
  */
 - (NSArray *)loadAllObjectsWithClass:(Class)class {
     NSMutableArray *objects = [[NSMutableArray alloc] init];
-    sqlite3_stmt *statement;
-    if (sqlite3_prepare_v2(_database, [[NSString stringWithFormat:kLoadWithClass,NSStringFromClass(class)] UTF8String], -1, &statement, nil)
-        == SQLITE_OK) {
-        while (sqlite3_step(statement) == SQLITE_ROW) {
-            char *keyDB = (char *) sqlite3_column_text(statement, 0);
-            const void *ptr = sqlite3_column_blob(statement, 1);
-            int size = sqlite3_column_bytes(statement, 1);
-            char *classDB = (char *) sqlite3_column_text(statement, 2);
-            
-            NSString *class = [[NSString alloc] initWithUTF8String:classDB];
-            NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
-            NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
-            
-            NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
-            
-            NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            [object setObject:dictionary forKey:kObject];
-            [object setObject:key forKey:kKey];
-            [object setObject:class forKey:kClass];
-            
-            [objects addObject:[self objectFromDictionary:object]];
+    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
+        sqlite3_stmt *statement;
+        if (sqlite3_prepare_v2(_database, [[NSString stringWithFormat:kLoadWithClass,NSStringFromClass(class)] UTF8String], -1, &statement, nil)
+            == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                char *keyDB = (char *) sqlite3_column_text(statement, 0);
+                const void *ptr = sqlite3_column_blob(statement, 1);
+                int size = sqlite3_column_bytes(statement, 1);
+                char *classDB = (char *) sqlite3_column_text(statement, 2);
+                
+                NSString *class = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
+                NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
+                
+                NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
+                
+                NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                [object setObject:dictionary forKey:kObject];
+                [object setObject:key forKey:kKey];
+                [object setObject:class forKey:kClass];
+                
+                [objects addObject:[self objectFromDictionary:object]];
+            }
+            sqlite3_finalize(statement);
         }
-        sqlite3_finalize(statement);
     }
     return objects;
 }
