@@ -1,4 +1,4 @@
-# NFISimplePersist - v 0.1
+# NFISimplePersist - v 0.1.1
 
 ### The best way to persist data into sqlite without problems.
 
@@ -13,13 +13,11 @@ Then, import:
 Its mandatory that your entity implements the NFISimplePersistObjectProtocol, like:
 
 ```objective-c
-@interface User : NSObject <NFISimplePersistObjectProtocol>;
-```
-
-And in the entity:
-
-```objective-c
 #import "User.h"
+
+@interface User () <NFISimplePersistObjectProtocol> 
+
+@end
 
 @implementation User
 
@@ -53,6 +51,8 @@ And in the entity:
     }
     return self;
 }
+
+@end
 ```
 
 # NFISimplePersist Usage
