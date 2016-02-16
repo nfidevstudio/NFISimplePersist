@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,11 +18,95 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jwK-yU-4EJ">
+                                <rect key="frame" x="231" y="190" width="139" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="Gte-3Z-Wcn"/>
+                                    <constraint firstAttribute="height" constant="30" id="uO8-cU-Vb1"/>
+                                </constraints>
+                                <state key="normal" title="Delete user with key"/>
+                                <connections>
+                                    <action selector="removeUserWithKey:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CJJ-mX-COx"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cMa-mE-ls9">
+                                <rect key="frame" x="248" y="152" width="105" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="112" id="1hJ-nU-XjE"/>
+                                    <constraint firstAttribute="height" constant="30" id="Zlp-tP-BTR"/>
+                                </constraints>
+                                <state key="normal" title="Delete all users"/>
+                                <connections>
+                                    <action selector="removeAllUsers:" destination="BYZ-38-t0r" eventType="touchUpInside" id="0D2-IV-ROr"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RYS-Ix-D86">
+                                <rect key="frame" x="244" y="114" width="112" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Z4H-MV-Zvf"/>
+                                    <constraint firstAttribute="width" constant="120" id="muF-Fd-piO"/>
+                                </constraints>
+                                <state key="normal" title="Delete first User"/>
+                                <connections>
+                                    <action selector="removeFirstUser:" destination="BYZ-38-t0r" eventType="touchUpInside" id="9lR-nr-kcV"/>
+                                </connections>
+                            </button>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OSK-aA-2sg">
+                                <rect key="frame" x="0.0" y="293" width="600" height="307"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="EiO-WE-XFb"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="FVh-ac-AiX"/>
+                                </connections>
+                            </tableView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HyN-i2-qVm">
+                                <rect key="frame" x="227" y="237" width="146" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="146" id="76r-RG-4oF"/>
+                                    <constraint firstAttribute="height" constant="30" id="mkY-Lx-7OM"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qOW-by-fYY">
+                                <rect key="frame" x="253" y="76" width="94" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="JsD-pg-P0w"/>
+                                    <constraint firstAttribute="width" constant="112" id="p9K-lq-XsD"/>
+                                </constraints>
+                                <state key="normal" title="Add new user"/>
+                                <connections>
+                                    <action selector="addUser:" destination="BYZ-38-t0r" eventType="touchUpInside" id="tuL-rZ-Yn4"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="jwK-yU-4EJ" firstAttribute="top" secondItem="cMa-mE-ls9" secondAttribute="bottom" constant="8" id="0MO-dl-6j4"/>
+                            <constraint firstItem="OSK-aA-2sg" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="3XO-rU-Bti"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="OSK-aA-2sg" secondAttribute="bottom" id="4JY-zr-nbO"/>
+                            <constraint firstItem="jwK-yU-4EJ" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5yq-Qt-6vQ"/>
+                            <constraint firstItem="cMa-mE-ls9" firstAttribute="top" secondItem="RYS-Ix-D86" secondAttribute="bottom" constant="8" id="CWh-2B-3vR"/>
+                            <constraint firstItem="RYS-Ix-D86" firstAttribute="top" secondItem="qOW-by-fYY" secondAttribute="bottom" constant="8" id="Dht-hb-Ldd"/>
+                            <constraint firstItem="qOW-by-fYY" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="EFT-UP-cAl"/>
+                            <constraint firstItem="OSK-aA-2sg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-20" id="Ng7-MI-1mH"/>
+                            <constraint firstItem="cMa-mE-ls9" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="SnR-Hp-u1a"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="OSK-aA-2sg" secondAttribute="trailing" constant="-20" id="UUJ-sd-wLf"/>
+                            <constraint firstItem="RYS-Ix-D86" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="VTO-nc-KU8"/>
+                            <constraint firstItem="OSK-aA-2sg" firstAttribute="top" secondItem="HyN-i2-qVm" secondAttribute="bottom" constant="26" id="ZsQ-pj-Dey"/>
+                            <constraint firstItem="HyN-i2-qVm" firstAttribute="top" secondItem="jwK-yU-4EJ" secondAttribute="bottom" constant="17" id="Zsa-gG-EOC"/>
+                            <constraint firstItem="HyN-i2-qVm" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zkq-h7-Gpz"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="keyField" destination="HyN-i2-qVm" id="aMa-Vc-cyk"/>
+                        <outlet property="tableView" destination="OSK-aA-2sg" id="j0t-Cy-WUh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="777" y="591"/>
         </scene>
     </scenes>
 </document>

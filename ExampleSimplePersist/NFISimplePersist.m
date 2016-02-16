@@ -19,8 +19,12 @@ NSString * const kCountFields = @"SELECT COUNT(*) FROM persistedObjects";
 NSString * const kLoadFirst = @"SELECT * FROM persistedObjects LIMIT 1";
 NSString * const kLoadAll = @"SELECT * FROM persistedObjects";
 NSString * const kLoadWithKey = @"SELECT * FROM persistedObjects WHERE key like '%@'";
+NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '%@'";
 
 NSString * const kDeleteFirst = @"DELETE FROM persistedObjects WHERE key = (SELECT key FROM persistedObjects LIMIT 1)";
+NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class = %@";
+NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key = %@";
+NSString * const kDeleteAll = @"DELETE FROM persistedObjects";
 
 NSString * const kClass = @"class";
 NSString * const kObject = @"object";
@@ -109,7 +113,7 @@ NSString * const kKey = @"key";
             
             sqlite3_stmt *updateStmt = nil;
             if(sqlite3_prepare_v2(_database, [kInsert UTF8String], -1, &updateStmt, NULL) != SQLITE_OK)  {
-                NSAssert1(0, @"Error while creating update statement. '%s'", sqlite3_errmsg(_database));
+                NSAssert1(0, @"Error while creating save statement. '%s'", sqlite3_errmsg(_database));
             } else {
                 sqlite3_bind_text(updateStmt, 1, [key UTF8String], -1, SQLITE_TRANSIENT);
                 sqlite3_bind_blob(updateStmt, 2, [data bytes], (int)[data length], SQLITE_TRANSIENT);
@@ -120,7 +124,7 @@ NSString * const kKey = @"key";
             sqlite3_finalize(updateStmt);
         } else {
             @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                           reason:[NSString stringWithFormat:@"To schedule request of this object, you must implement GMService protocol and add all required methods."]
+                                           reason:[NSString stringWithFormat:@"To persist this object, you must implement NFISimplePersistObject protocol and add all required methods."]
                                          userInfo:nil];
         }
     }
@@ -134,32 +138,33 @@ NSString * const kKey = @"key";
  */
 - (NSArray *)loadAllObjects {
     NSMutableArray *objects = [[NSMutableArray alloc] init];
-    sqlite3_stmt *statement;
-    
-    if (sqlite3_prepare_v2(_database, [kLoadAll UTF8String], -1, &statement, nil)
-        == SQLITE_OK) {
-        while (sqlite3_step(statement) == SQLITE_ROW) {
-            char *keyDB = (char *) sqlite3_column_text(statement, 0);
-            const void *ptr = sqlite3_column_blob(statement, 1);
-            int size = sqlite3_column_bytes(statement, 1);
-            char *classDB = (char *) sqlite3_column_text(statement, 2);
-            
-            NSString *class = [[NSString alloc] initWithUTF8String:classDB];
-            NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
-            NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
-            
-            NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
-            
-            NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-            [object setObject:dictionary forKey:kObject];
-            [object setObject:key forKey:kKey];
-            [object setObject:class forKey:kClass];
-            
-            [objects addObject:[self objectFromDictionary:object]];
+    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
+        sqlite3_stmt *statement;
+        if (sqlite3_prepare_v2(_database, [kLoadAll UTF8String], -1, &statement, nil) == SQLITE_OK) {
+            while (sqlite3_step(statement) == SQLITE_ROW) {
+                char *keyDB = (char *) sqlite3_column_text(statement, 0);
+                const void *ptr = sqlite3_column_blob(statement, 1);
+                int size = sqlite3_column_bytes(statement, 1);
+                char *classDB = (char *) sqlite3_column_text(statement, 2);
+                
+                NSString *class = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
+                NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
+                
+                NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
+                
+                NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+                [object setObject:dictionary forKey:kObject];
+                [object setObject:key forKey:kKey];
+                [object setObject:class forKey:kClass];
+                
+                [objects addObject:[self objectFromDictionary:object]];
+            }
+            sqlite3_finalize(statement);
+        } else {
+            NSAssert1(0, @"Error loading all objects. '%s'", sqlite3_errmsg(_database));
         }
-        sqlite3_finalize(statement);
-    } else {
-        NSAssert1(0, @"Error while creating database. '%s'", sqlite3_errmsg(_database));
+
     }
     return objects;
 }
@@ -192,7 +197,7 @@ NSString * const kKey = @"key";
             }
             sqlite3_finalize(statement);
         } else {
-            NSAssert1(0, @"Error while creating database. '%s'", sqlite3_errmsg(_database));
+            NSAssert1(0, @"Error loading first object. '%s'", sqlite3_errmsg(_database));
         }
     }
     return nil;
@@ -230,11 +235,69 @@ NSString * const kKey = @"key";
 }
 
 
+/**
+ *  Load all objects in table with the same class
+ */
+- (NSArray *)loadAllObjectsWithClass:(Class)class {
+    NSMutableArray *objects = [[NSMutableArray alloc] init];
+    sqlite3_stmt *statement;
+    if (sqlite3_prepare_v2(_database, [[NSString stringWithFormat:kLoadWithClass,NSStringFromClass(class)] UTF8String], -1, &statement, nil)
+        == SQLITE_OK) {
+        while (sqlite3_step(statement) == SQLITE_ROW) {
+            char *keyDB = (char *) sqlite3_column_text(statement, 0);
+            const void *ptr = sqlite3_column_blob(statement, 1);
+            int size = sqlite3_column_bytes(statement, 1);
+            char *classDB = (char *) sqlite3_column_text(statement, 2);
+            
+            NSString *class = [[NSString alloc] initWithUTF8String:classDB];
+            NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
+            NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
+            
+            NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
+            
+            NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+            [object setObject:dictionary forKey:kObject];
+            [object setObject:key forKey:kKey];
+            [object setObject:class forKey:kClass];
+            
+            [objects addObject:[self objectFromDictionary:object]];
+        }
+        sqlite3_finalize(statement);
+    }
+    return objects;
+}
+
+
 #pragma mark - Remove methods
+
+/**
+ *  Remove all objects
+ */
+- (BOOL)removeAllObjects {
+    if(sqlite3_exec(_database, [kDeleteAll UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+        return YES;
+    }
+    return NO;
+}
+
+/**
+ *  Remove object with the given class in the table. Return a BOOL with the result
+ */
+- (BOOL)removeObjectWithClass:(Class)class {
+    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithClass,NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+        return YES;
+    }
+    return NO;
+}
+
+
 /**
  *  Remove first object in the table. Return a BOOL with the result
  */
 - (BOOL)removeFirstObject {
+    if(sqlite3_exec(_database, [kDeleteFirst UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+        return YES;
+    }
     return NO;
 }
 
@@ -242,13 +305,9 @@ NSString * const kKey = @"key";
  *  Remove object with the given key in the table. Return a BOOL with the result
  */
 - (BOOL)removeObjectWithKey:(NSString *)key {
-    return NO;
-}
-
-/**
- *  Return YES if the table is empty
- */
-- (BOOL)isEmpty {
+    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithKey,key] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+        return YES;
+    }
     return NO;
 }
 

@@ -63,9 +63,9 @@
 - (BOOL)removeObjectWithClass:(Class)class;
 
 /**
- *  Return YES if the table is empty
+ *  Remove all objects
  */
-- (BOOL)isEmpty;
+- (BOOL)removeAllObjects;
 
 @end
 
