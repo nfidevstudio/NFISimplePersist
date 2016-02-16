@@ -10,7 +10,7 @@ Works with a singleton:
 
 You can save all kind of entities:  
 
-```Objective-c
+```objective-c
 NFISimplePersist *persist = [NFISimplePersist standarSimplePersist];
 User *user = [[User alloc] initWithId:1 user:@"NFI" andPass:@"no-pass"];
 [persist saveObject:user withKey:[NSString stringWithFormat:@"%ld",user.id]];
@@ -18,21 +18,21 @@ User *user = [[User alloc] initWithId:1 user:@"NFI" andPass:@"no-pass"];
 
 To get some object:
 
-```Objective-c
+```objective-c
 NFISimplePersist *persist = [NFISimplePersist standarSimplePersist];
 [persist loadObjectWithKey:@"1"];
 ```
 
 You can get all objects of the same class:
 
-```Objective-c
+```objective-c
 NFISimplePersist *persist = [NFISimplePersist standarSimplePersist];
 [persist loadAllObjectsWithClass:[User class]];
 ```
 
 To remove it:
 
-```Objective-c
+```objective-c
 NFISimplePersist *persist = [NFISimplePersist standarSimplePersist];
 [persist removeObjectWithKey:@"1"];
 ```
