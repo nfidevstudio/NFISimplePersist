@@ -1,20 +1,19 @@
 //
-//  NFSimplePersistObject.m
+//  NFIEncode.m
 //  ExampleSimplePersist
 //
-//  Created by jcarlos on 15/2/16.
+//  Created by jcarlos on 16/2/16.
 //  Copyright © 2016 José Carlos. All rights reserved.
 //
 
-#import "NFISimplePersistObject.h"
-#import <UIkit/UIkit.h>
+#import "NFIEncode.h"
 #import <objc/runtime.h>
 
-@implementation NFISimplePersistObject
+@import UIKit;
 
-#pragma mark - Encode
+@implementation NFIEncode
 
-- (void)encodeWithCoder:(NSCoder *)encoder andClass:(Class)objectClass {
++ (void)encodeWithCoder:(NSCoder *)encoder andClass:(Class)objectClass {
     unsigned int numProps = 0;
     unsigned int i = 0;
     objc_property_t *props = class_copyPropertyList(objectClass, &numProps);
@@ -40,7 +39,7 @@
     }
 }
 
-- (id)initWithCoder:(NSCoder *)decoder andClass:(Class)objectClass {
++ (id)initWithCoder:(NSCoder *)decoder andClass:(Class)objectClass {
     id object = [[objectClass alloc]init];
     unsigned int numProps = 0;
     unsigned int i = 0;

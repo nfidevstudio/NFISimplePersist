@@ -23,13 +23,3 @@
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 @end
-
-@interface NFISimplePersistObject : NSObject
-
-#pragma mark - Encode
-
-- (void)encodeWithCoder:(NSCoder *)encoder andClass:(Class)objectClass;
-
-- (id)initWithCoder:(NSCoder *)decoder andClass:(Class)objectClass;
-
-@end

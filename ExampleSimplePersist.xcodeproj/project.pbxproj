@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2C608AD41C73A7FB0078A493 /* NFIEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C608AD31C73A7FB0078A493 /* NFIEncode.m */; };
 		2CA7E4661C724EB000A9EF2E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA7E4651C724EB000A9EF2E /* User.m */; };
 		2CA7E4681C72508200A9EF2E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */; };
-		2CA7E46C1C7255BB00A9EF2E /* NFISimplePersistObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA7E46B1C7255BB00A9EF2E /* NFISimplePersistObject.m */; };
 		F2E26E531C71F569003AF54D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E521C71F569003AF54D /* main.m */; };
 		F2E26E561C71F569003AF54D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E551C71F569003AF54D /* AppDelegate.m */; };
 		F2E26E591C71F569003AF54D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E581C71F569003AF54D /* ViewController.m */; };
@@ -39,11 +39,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2C608AD21C73A7FB0078A493 /* NFIEncode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFIEncode.h; sourceTree = "<group>"; };
+		2C608AD31C73A7FB0078A493 /* NFIEncode.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFIEncode.m; sourceTree = "<group>"; };
 		2CA7E4641C724EB000A9EF2E /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
 		2CA7E4651C724EB000A9EF2E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		2CA7E46A1C7255BB00A9EF2E /* NFISimplePersistObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFISimplePersistObject.h; sourceTree = "<group>"; };
-		2CA7E46B1C7255BB00A9EF2E /* NFISimplePersistObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NFISimplePersistObject.m; sourceTree = "<group>"; };
 		F2E26E4E1C71F569003AF54D /* ExampleSimplePersist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSimplePersist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2E26E521C71F569003AF54D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F2E26E541C71F569003AF54D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -90,29 +91,95 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2C608AD51C73A89B0078A493 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2C608AD61C73A8AD0078A493 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				2C608ADC1C73A8FF0078A493 /* Main & App Delegate */,
+				2CA7E4631C724EA300A9EF2E /* Model */,
+				F2E26E841C71F584003AF54D /* SimplePersist */,
+				2C608ADB1C73A8F70078A493 /* ViewControllers */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
+		2C608AD71C73A8B00078A493 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				F2E26E621C71F569003AF54D /* Info.plist */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
+		2C608AD81C73A8B50078A493 /* Artworks */ = {
+			isa = PBXGroup;
+			children = (
+				F2E26E5D1C71F569003AF54D /* Assets.xcassets */,
+			);
+			path = Artworks;
+			sourceTree = "<group>";
+		};
+		2C608ADA1C73A8DE0078A493 /* Interface */ = {
+			isa = PBXGroup;
+			children = (
+				F2E26E5F1C71F569003AF54D /* LaunchScreen.storyboard */,
+				F2E26E5A1C71F569003AF54D /* Main.storyboard */,
+			);
+			path = Interface;
+			sourceTree = "<group>";
+		};
+		2C608ADB1C73A8F70078A493 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				F2E26E571C71F569003AF54D /* ViewController.h */,
+				F2E26E581C71F569003AF54D /* ViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		2C608ADC1C73A8FF0078A493 /* Main & App Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				F2E26E541C71F569003AF54D /* AppDelegate.h */,
+				F2E26E551C71F569003AF54D /* AppDelegate.m */,
+				F2E26E521C71F569003AF54D /* main.m */,
+			);
+			path = "Main & App Delegate";
+			sourceTree = "<group>";
+		};
 		2CA7E4631C724EA300A9EF2E /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				2CA7E4641C724EB000A9EF2E /* User.h */,
 				2CA7E4651C724EB000A9EF2E /* User.m */,
 			);
-			name = Model;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		2CA7E4691C72557700A9EF2E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				2C608AD21C73A7FB0078A493 /* NFIEncode.h */,
+				2C608AD31C73A7FB0078A493 /* NFIEncode.m */,
 			);
 			name = Utilities;
+			path = ../Utilities;
 			sourceTree = "<group>";
 		};
 		F2E26E451C71F569003AF54D = {
 			isa = PBXGroup;
 			children = (
-				2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */,
 				F2E26E501C71F569003AF54D /* ExampleSimplePersist */,
 				F2E26E6A1C71F569003AF54D /* ExampleSimplePersistTests */,
 				F2E26E751C71F569003AF54D /* ExampleSimplePersistUITests */,
+				2C608AD51C73A89B0078A493 /* Frameworks */,
 				F2E26E4F1C71F569003AF54D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -130,28 +197,12 @@
 		F2E26E501C71F569003AF54D /* ExampleSimplePersist */ = {
 			isa = PBXGroup;
 			children = (
-				2CA7E4691C72557700A9EF2E /* Utilities */,
-				2CA7E4631C724EA300A9EF2E /* Model */,
-				F2E26E841C71F584003AF54D /* SimplePersist */,
-				F2E26E541C71F569003AF54D /* AppDelegate.h */,
-				F2E26E551C71F569003AF54D /* AppDelegate.m */,
-				F2E26E571C71F569003AF54D /* ViewController.h */,
-				F2E26E581C71F569003AF54D /* ViewController.m */,
-				F2E26E5A1C71F569003AF54D /* Main.storyboard */,
-				F2E26E5D1C71F569003AF54D /* Assets.xcassets */,
-				F2E26E5F1C71F569003AF54D /* LaunchScreen.storyboard */,
-				F2E26E621C71F569003AF54D /* Info.plist */,
-				F2E26E511C71F569003AF54D /* Supporting Files */,
+				2C608AD81C73A8B50078A493 /* Artworks */,
+				2C608ADA1C73A8DE0078A493 /* Interface */,
+				2C608AD71C73A8B00078A493 /* Resource */,
+				2C608AD61C73A8AD0078A493 /* Source */,
 			);
 			path = ExampleSimplePersist;
-			sourceTree = "<group>";
-		};
-		F2E26E511C71F569003AF54D /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				F2E26E521C71F569003AF54D /* main.m */,
-			);
-			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		F2E26E6A1C71F569003AF54D /* ExampleSimplePersistTests */ = {
@@ -175,12 +226,12 @@
 		F2E26E841C71F584003AF54D /* SimplePersist */ = {
 			isa = PBXGroup;
 			children = (
+				2CA7E4691C72557700A9EF2E /* Utilities */,
 				F2E26E851C71F59D003AF54D /* NFISimplePersist.h */,
 				F2E26E861C71F59D003AF54D /* NFISimplePersist.m */,
 				2CA7E46A1C7255BB00A9EF2E /* NFISimplePersistObject.h */,
-				2CA7E46B1C7255BB00A9EF2E /* NFISimplePersistObject.m */,
 			);
-			name = SimplePersist;
+			path = SimplePersist;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -313,10 +364,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C608AD41C73A7FB0078A493 /* NFIEncode.m in Sources */,
 				2CA7E4661C724EB000A9EF2E /* User.m in Sources */,
 				F2E26E591C71F569003AF54D /* ViewController.m in Sources */,
 				F2E26E561C71F569003AF54D /* AppDelegate.m in Sources */,
-				2CA7E46C1C7255BB00A9EF2E /* NFISimplePersistObject.m in Sources */,
 				F2E26E871C71F59D003AF54D /* NFISimplePersist.m in Sources */,
 				F2E26E531C71F569003AF54D /* main.m in Sources */,
 			);
@@ -360,6 +411,7 @@
 				F2E26E5B1C71F569003AF54D /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		F2E26E5F1C71F569003AF54D /* LaunchScreen.storyboard */ = {
@@ -368,6 +420,7 @@
 				F2E26E601C71F569003AF54D /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -459,7 +512,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = ExampleSimplePersist/Info.plist;
+				INFOPLIST_FILE = ExampleSimplePersist/Resource/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jcarlosEstela.ExampleSimplePersist;
@@ -471,7 +524,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				INFOPLIST_FILE = ExampleSimplePersist/Info.plist;
+				INFOPLIST_FILE = ExampleSimplePersist/Resource/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jcarlosEstela.ExampleSimplePersist;
