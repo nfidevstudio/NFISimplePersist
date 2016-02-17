@@ -19,48 +19,39 @@
 #pragma mark - Persist method
 
 /**
- *  Persist the object in the data base
+ *  Persist the object
  */
 - (void)saveObject:(id)object withKey:(NSString *)key;
 
 #pragma mark - Load methods
 
 /**
- *  Load all objects in table
+ *  Load all objects
  */
 - (NSArray *)loadAllObjects;
 
 /**
- *  Load all objects in table with the same class
+ *  Load all objects with the same class
  */
 - (NSArray *)loadAllObjectsWithClass:(Class)class;
 
 /**
- *  Load the first object in the database. Return nil if the table is empty
+ *  Load the object with the given key and class. Return nil if the table is empty
  */
-- (id)loadFirstObject;
-
-/**
- *  Load the object with the given key in the database. Return nil if the table is empty
- */
-- (id)loadObjectWithKey:(NSString *)key;
+- (id)loadObjectWithKey:(NSString *)key andClass:(Class)class;
 
 
 #pragma mark - Remove methods
-/**
- *  Remove first object in the table. Return a BOOL with the result
- */
-- (BOOL)removeFirstObject;
 
 /**
- *  Remove object with the given key in the table. Return a BOOL with the result
+ *  Remove object with the given key and class. Return a BOOL with the result
  */
-- (BOOL)removeObjectWithKey:(NSString *)key;
+- (BOOL)removeObjectWithKey:(NSString *)key andClass:(Class)class;
 
 /**
- *  Remove object with the given class in the table. Return a BOOL with the result
+ *  Remove object with the given class. Return a BOOL with the result
  */
-- (BOOL)removeObjectWithClass:(Class)class;
+- (BOOL)removeObjectsWithClass:(Class)class;
 
 /**
  *  Remove all objects

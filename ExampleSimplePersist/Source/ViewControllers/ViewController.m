@@ -43,12 +43,7 @@
 
 - (IBAction)addUser:(id)sender {
     User *user = [[User alloc] initWithId:_users.count user:@"Jose" andPass:@"aqweopasd"];
-    [[NFISimplePersist standarSimplePersist] saveObject:user withKey:[NSString stringWithFormat:@"%ld",user.id]];
-    [self updateUsers];
-}
-
-- (IBAction)removeFirstUser:(id)sender {
-    [[NFISimplePersist standarSimplePersist] removeFirstObject];
+    [[NFISimplePersist standarSimplePersist] saveObject:user withKey:[NSString stringWithFormat:@"%ld",(long)user.id]];
     [self updateUsers];
 }
 
@@ -61,7 +56,7 @@
     if (_keyField) {
         if (_keyField.text) {
             if (![_keyField.text isEqualToString:@""]) {
-                if (![[NFISimplePersist standarSimplePersist] removeObjectWithKey:_keyField.text]) {
+                if (![[NFISimplePersist standarSimplePersist] removeObjectWithKey:_keyField.text andClass:[User class]]) {
                     NSLog(@"Error");
                 }
                 [self updateUsers];

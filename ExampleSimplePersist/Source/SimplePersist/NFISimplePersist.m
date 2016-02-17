@@ -11,19 +11,17 @@
 #import <sqlite3.h>
 
 NSString * const kDBName = @"NFISimplePersist.db";
-NSString * const kCreatePersistTable = @"CREATE TABLE persistedObjects (key TEXT PRIMARY KEY, object BLOB, class TEXT NOT NULL) ";
+NSString * const kCreatePersistTable = @"CREATE TABLE persistedObjects (key TEXT NOT NULL, object BLOB, class TEXT NOT NULL, PRIMARY KEY (key, class))";
 NSString * const kTableExist = @"SELECT name FROM sqlite_master WHERE type='table' AND name='persistedObjects'";
 NSString * const kInsert = @"INSERT INTO persistedObjects VALUES(?, ?, ?);";
 NSString * const kCountFields = @"SELECT COUNT(*) FROM persistedObjects";
 
-NSString * const kLoadFirst = @"SELECT * FROM persistedObjects LIMIT 1";
 NSString * const kLoadAll = @"SELECT * FROM persistedObjects";
-NSString * const kLoadWithKey = @"SELECT * FROM persistedObjects WHERE key like '%@'";
+NSString * const kLoadWithKeyAndClass = @"SELECT * FROM persistedObjects WHERE key like '%@' AND class like '%@'";
 NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '%@'";
 
-NSString * const kDeleteFirst = @"DELETE FROM persistedObjects WHERE key = (SELECT key FROM persistedObjects LIMIT 1)";
-NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class = %@";
-NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key = %@";
+NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class like '%@'";
+NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key like '%@' AND class like '%@'";
 NSString * const kDeleteAll = @"DELETE FROM persistedObjects";
 
 NSString * const kClass = @"class";
@@ -42,6 +40,7 @@ NSString * const kKey = @"key";
 #pragma mark - Private Methods.
 #pragma mark -
 #pragma mark - DB methods.
+
 /**
  *  Load the DB
  */
@@ -64,6 +63,9 @@ NSString * const kKey = @"key";
     }
 }
 
+/**
+ * Load object from Dictionary
+ */
 - (id)objectFromDictionary:(NSDictionary *)dictionary {
     if (dictionary) {
         Class objectClass = NSClassFromString(dictionary[kClass]);
@@ -100,7 +102,7 @@ NSString * const kKey = @"key";
 #pragma mark - Persist method
 
 /**
- *  Persist the object in the data base
+ *  Persist the object
  */
 - (void)saveObject:(id)object withKey:(NSString *)key {
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
@@ -169,47 +171,14 @@ NSString * const kKey = @"key";
     return objects;
 }
 
-/**
- *  Load the first object in the database. Return nil if the table is empty
- */
-- (id)loadFirstObject {
-    sqlite3_stmt *statement;
-    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
-        if (sqlite3_prepare_v2(_database, [kLoadFirst UTF8String], -1, &statement, nil) == SQLITE_OK) {
-            while (sqlite3_step(statement) == SQLITE_ROW) {
-                char *keyDB = (char *) sqlite3_column_text(statement, 0);
-                const void *ptr = sqlite3_column_blob(statement, 1);
-                int size = sqlite3_column_bytes(statement, 1);
-                char *classDB = (char *) sqlite3_column_text(statement, 2);
-                
-                NSString *class = [[NSString alloc] initWithUTF8String:classDB];
-                NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
-                NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
-                
-                NSMutableDictionary *object = [[NSMutableDictionary alloc] init];
-                
-                NSDictionary *dictionary = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-                [object setObject:dictionary forKey:kObject];
-                [object setObject:key forKey:kKey];
-                [object setObject:class forKey:kClass];
-                
-                return [self objectFromDictionary:object];
-            }
-            sqlite3_finalize(statement);
-        } else {
-            NSAssert1(0, @"Error loading first object. '%s'", sqlite3_errmsg(_database));
-        }
-    }
-    return nil;
-}
 
 /**
- *  Load the object with the given key in the database. Return nil if the table is empty
+ *  Load the object with the given key and class. Return nil if the table is empty
  */
-- (id)loadObjectWithKey:(NSString *)key {
+- (id)loadObjectWithKey:(NSString *)key andClass:(Class)class {
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         sqlite3_stmt *statement;
-        if (sqlite3_prepare_v2(_database, [[NSString stringWithFormat:kLoadWithKey,key] UTF8String], -1, &statement, nil)
+        if (sqlite3_prepare_v2(_database, [[NSString stringWithFormat:kLoadWithKeyAndClass, key, NSStringFromClass(class)] UTF8String], -1, &statement, nil)
             == SQLITE_OK) {
             while (sqlite3_step(statement) == SQLITE_ROW) {
                 char *keyDB = (char *) sqlite3_column_text(statement, 0);
@@ -239,9 +208,9 @@ NSString * const kKey = @"key";
 
 
 /**
- *  Load all objects in table with the same class
+ *  Load all objects with the same class
  */
-- (NSArray *)loadAllObjectsWithClass:(Class)class {
+- (NSArray *)loadAllObjectsWithClass:(__unsafe_unretained Class)class {
     NSMutableArray *objects = [[NSMutableArray alloc] init];
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         sqlite3_stmt *statement;
@@ -286,31 +255,20 @@ NSString * const kKey = @"key";
 }
 
 /**
- *  Remove object with the given class in the table. Return a BOOL with the result
+ *  Remove object with the given class. Return a BOOL with the result
  */
-- (BOOL)removeObjectWithClass:(Class)class {
-    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithClass,NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
-        return YES;
-    }
-    return NO;
-}
-
-
-/**
- *  Remove first object in the table. Return a BOOL with the result
- */
-- (BOOL)removeFirstObject {
-    if(sqlite3_exec(_database, [kDeleteFirst UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+- (BOOL)removeObjectsWithClass:(__unsafe_unretained Class)class {
+    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithClass, NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
         return YES;
     }
     return NO;
 }
 
 /**
- *  Remove object with the given key in the table. Return a BOOL with the result
+ *  Remove object with the given key and class. Return a BOOL with the result
  */
-- (BOOL)removeObjectWithKey:(NSString *)key {
-    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithKey,key] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+- (BOOL)removeObjectWithKey:(NSString *)key andClass:(__unsafe_unretained Class)class {
+    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithKey, key, NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
         return YES;
     }
     return NO;
