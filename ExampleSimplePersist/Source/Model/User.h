@@ -11,7 +11,7 @@
 
 @interface User : NSObject <NFISimplePersistObjectProtocol>
 
-@property (nonatomic, assign) NSInteger id;
+@property (nonatomic, copy) NSString *id;
 @property (nonatomic, copy) NSString *user;
 @property (nonatomic, copy) NSString *pass;
 
@@ -21,6 +21,6 @@
 
 #pragma mark - Init
 
-- (instancetype)initWithId:(NSInteger)id user:(NSString *)user andPass:(NSString *)pass;
+- (instancetype)initWithId:(NSString *)id user:(NSString *)user andPass:(NSString *)pass;
 
 @end

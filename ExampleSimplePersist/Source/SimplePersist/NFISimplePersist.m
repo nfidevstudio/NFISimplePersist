@@ -221,6 +221,7 @@ NSString * const kKey = @"key";
         }
 
     }
+    sqlite3_close(_database);
     return objects;
 }
 
@@ -250,12 +251,15 @@ NSString * const kKey = @"key";
                 [object setObject:key forKey:kKey];
                 [object setObject:class forKey:kClass];
                 
+                sqlite3_close(_database);
+                
                 return [self objectFromDictionary:object];
             }
             sqlite3_finalize(statement);
         }
 
     }
+    sqlite3_close(_database);
     return nil;
 }
 
@@ -291,6 +295,7 @@ NSString * const kKey = @"key";
             sqlite3_finalize(statement);
         }
     }
+    sqlite3_close(_database);
     return objects;
 }
 
@@ -301,9 +306,12 @@ NSString * const kKey = @"key";
  *  Remove all objects
  */
 - (BOOL)removeAllObjects {
-    if(sqlite3_exec(_database, [kDeleteAll UTF8String], NULL, NULL, nil) == SQLITE_OK) {
-        return YES;
+    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
+        if(sqlite3_exec(_database, [kDeleteAll UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+            return YES;
+        }
     }
+    sqlite3_close(_database);
     return NO;
 }
 
@@ -311,9 +319,12 @@ NSString * const kKey = @"key";
  *  Remove object with the given class. Return a BOOL with the result
  */
 - (BOOL)removeObjectsWithClass:(__unsafe_unretained Class)class {
-    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithClass, NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
-        return YES;
+    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
+        if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithClass, NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+            return YES;
+        }
     }
+    sqlite3_close(_database);
     return NO;
 }
 
@@ -321,9 +332,12 @@ NSString * const kKey = @"key";
  *  Remove object with the given key and class. Return a BOOL with the result
  */
 - (BOOL)removeObjectWithKey:(NSString *)key andClass:(__unsafe_unretained Class)class {
-    if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithKey, key, NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
-        return YES;
+    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
+        if(sqlite3_exec(_database, [[NSString stringWithFormat:kDeleteWithKey, key, NSStringFromClass(class)] UTF8String], NULL, NULL, nil) == SQLITE_OK) {
+            return YES;
+        }
     }
+    sqlite3_close(_database);
     return NO;
 }
 

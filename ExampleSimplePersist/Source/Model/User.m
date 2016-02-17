@@ -13,7 +13,7 @@
 
 #pragma mark - Init
 
-- (instancetype)initWithId:(NSInteger)id user:(NSString *)user andPass:(NSString *)pass {
+- (instancetype)initWithId:(NSString *)id user:(NSString *)user andPass:(NSString *)pass {
     self = [super init];
     if (self) {
         _user = user;
@@ -38,7 +38,7 @@
 - (NSDictionary *)saveAsDictionary {
     return @{@"user" : _user,
             @"pass" : _pass,
-            @"id" : [NSNumber numberWithInteger:_id]
+            @"id" : _id
             };
 }
 
@@ -47,7 +47,7 @@
     if (self) {
         _user = dictionary[@"user"];
         _pass = dictionary[@"pass"];
-        _id = [dictionary[@"id"] integerValue];
+        _id = dictionary[@"id"];
     }
     return self;
 }
