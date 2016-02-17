@@ -23,6 +23,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     _users = [[[NFISimplePersist standarSimplePersist] loadAllObjectsWithClass:[User class]] mutableCopy];
+    
+    User *user1 = [[User alloc] initWithId:0 user:@"NFI" andPass:@"no-pass-2"];
+    User *user2 = [[User alloc] initWithId:1 user:@"NFI" andPass:@"no-pass-3"];
+    User *user3 = [[User alloc] initWithId:2 user:@"NFI" andPass:@"no-pass-4"];
+
+    [[NFISimplePersist standarSimplePersist] saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withKey:@"pass" andCompletionBlock:^(BOOL success){
+        NSLog(@"Completed");
+        [self updateUsers];
+    }];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -42,7 +51,7 @@
 #pragma mark - Actions
 
 - (IBAction)addUser:(id)sender {
-    User *user = [[User alloc] initWithId:_users.count user:@"Jose" andPass:@"aqweopasd"];
+    User *user = [[User alloc] initWithId:_users.count user:@"NFI" andPass:@"no-pass"];
     [[NFISimplePersist standarSimplePersist] saveObject:user withKey:[NSString stringWithFormat:@"%ld",(long)user.id]];
     [self updateUsers];
 }

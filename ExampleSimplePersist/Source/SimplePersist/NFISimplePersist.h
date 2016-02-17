@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^SaveObjectsCompletionBlock)(BOOL success);
+
 @interface NFISimplePersist : NSObject
 
 #pragma mark - Instance.
@@ -22,6 +24,15 @@
  *  Persist the object
  */
 - (void)saveObject:(id)object withKey:(NSString *)key;
+
+/**
+ * Persist an array of objects.
+ *
+ * @params key - This represent the property name of the key to save in the data base (The property ALWAYS must be a NSString). i.e (for save the user.id => @"id").
+ *
+ * All the objects will be saved with the same key
+ */
+- (void)saveObjects:(NSArray *)objects withKey:(NSString *)key andCompletionBlock:(SaveObjectsCompletionBlock)completionBlock;
 
 #pragma mark - Load methods
 

@@ -8,6 +8,8 @@
 
 #import "NFISimplePersistObject.h"
 #import "NFISimplePersist.h"
+#import <UIKit/UIKit.h>
+#import <objc/runtime.h>
 #import <sqlite3.h>
 
 NSString * const kDBName = @"NFISimplePersist.db";
@@ -82,6 +84,16 @@ NSString * const kKey = @"key";
     return nil;
 }
 
+- (NSString *)propertyValueOf:(NSString *)propertyString inObject:(id)object {
+    if ([[object valueForKey:propertyString] isKindOfClass:[NSString class]]) {
+        return [object valueForKey:propertyString];
+    } else {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                       reason:[NSString stringWithFormat:@"The property key of some object is not a NSString."]
+                                     userInfo:nil];
+    }
+}
+
 #pragma mark - Public Methods.
 #pragma mark -
 #pragma mark - Instance.
@@ -107,6 +119,7 @@ NSString * const kKey = @"key";
 - (void)saveObject:(id)object withKey:(NSString *)key {
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         if ([object respondsToSelector:@selector(saveAsDictionary)]) {
+            
             NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], key]
                                                                      forKeys:@[kClass, kObject, kKey]];
             NSString *class = dictToSave[kClass];
@@ -130,6 +143,46 @@ NSString * const kKey = @"key";
                                          userInfo:nil];
         }
     }
+    sqlite3_close(_database);
+}
+
+/**
+ * Persist an array of objects.
+ *
+ * @params key - This represent the property name of the key to save in the data base (The property ALWAYS must be a NSString). i.e (for save the user.id => @"id").
+ *
+ * All the objects will be saved with the same key
+ */
+- (void)saveObjects:(NSArray *)objects withKey:(NSString *)key andCompletionBlock:(SaveObjectsCompletionBlock)completionBlock {
+    if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
+        for (id object in objects) {
+            if ([object respondsToSelector:@selector(saveAsDictionary)]) {
+                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:key inObject:object]] forKeys:@[kClass, kObject, kKey]];
+                NSString *class = dictToSave[kClass];
+                NSDictionary *object = dictToSave[kObject];
+                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
+                
+                sqlite3_stmt *updateStmt = nil;
+                if(sqlite3_prepare_v2(_database, [kInsert UTF8String], -1, &updateStmt, NULL) != SQLITE_OK)  {
+                    NSAssert1(0, @"Error while saving multiple objects. '%s'", sqlite3_errmsg(_database));
+                } else {
+                    sqlite3_bind_text(updateStmt, 1, [[self propertyValueOf:key inObject:object] UTF8String], -1, SQLITE_TRANSIENT);
+                    sqlite3_bind_blob(updateStmt, 2, [data bytes], (int)[data length], SQLITE_TRANSIENT);
+                    sqlite3_bind_text(updateStmt, 3, [class UTF8String], -1, SQLITE_TRANSIENT);
+                    sqlite3_step(updateStmt);
+                }
+                sqlite3_reset(updateStmt);
+                sqlite3_finalize(updateStmt);
+            } else {
+                @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                               reason:[NSString stringWithFormat:@"To persist this object, you must implement NFISimplePersistObject protocol and add all required methods."]
+                                             userInfo:nil];
+            }
+        }
+    } else {
+        completionBlock(NO);
+    }
+    completionBlock(YES);
     sqlite3_close(_database);
 }
 
