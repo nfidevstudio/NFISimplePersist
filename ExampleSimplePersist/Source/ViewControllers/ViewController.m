@@ -28,7 +28,7 @@
     User *user2 = [[User alloc] initWithId:@"1" user:@"NFI" andPass:@"no-pass"];
     User *user3 = [[User alloc] initWithId:@"2" user:@"NFI" andPass:@"no-pass"];
 
-    [[NFISimplePersist standarSimplePersist] saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withKey:@"id" andCompletionBlock:^(BOOL success){
+    [[NFISimplePersist standarSimplePersist] saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withPropertyKey:@"id" andCompletionBlock:^(BOOL success){
         NSLog(@"Completed");
         [self updateUsers];
     }];

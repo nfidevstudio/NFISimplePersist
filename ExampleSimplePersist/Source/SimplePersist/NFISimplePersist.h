@@ -32,7 +32,7 @@ typedef void (^SaveObjectsCompletionBlock)(BOOL success);
  *
  * All the objects will be saved with the same key
  */
-- (void)saveObjects:(NSArray *)objects withKey:(NSString *)key andCompletionBlock:(SaveObjectsCompletionBlock)completionBlock;
+- (void)saveObjects:(NSArray *)objects withPropertyKey:(NSString *)key andCompletionBlock:(SaveObjectsCompletionBlock)completionBlock;
 
 #pragma mark - Load methods
 
