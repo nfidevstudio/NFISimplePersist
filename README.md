@@ -101,7 +101,7 @@ User *user1 = [[User alloc] initWithId:@"0" user:@"NFI1" andPass:@"no-pass"];
 User *user2 = [[User alloc] initWithId:@"1" user:@"NFI2" andPass:@"no-pass"];
 User *user3 = [[User alloc] initWithId:@"2" user:@"NFI3" andPass:@"no-pass"];
 
-[persist saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withKey:@"id" 
+[persist saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withPropertyKey:@"id" 
 andCompletionBlock:^(BOOL success){
         NSLog(@"Completed");
 }];
