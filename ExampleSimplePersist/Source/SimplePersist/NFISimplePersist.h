@@ -71,6 +71,11 @@ typedef void (^SaveObjectsCompletionBlock)(BOOL success);
 #pragma mark - Remove methods
 
 /**
+ * Remove object from db
+ */
+- (BOOL)removeObject:(id)object;
+
+/**
  *  Remove object with the given key and class. Return a BOOL with the result
  */
 - (BOOL)removeObjectWithKey:(NSString *)key andClass:(Class)class;

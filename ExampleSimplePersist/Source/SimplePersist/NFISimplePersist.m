@@ -318,6 +318,20 @@ NSString * const kKey = @"key";
 #pragma mark - Remove methods
 
 /**
+ * Remove object from db
+ */
+- (BOOL)removeObject:(id)object {
+    if ([[object class] respondsToSelector:@selector(uniqueIdentifier)]) {
+        NSString *key = [[object class] uniqueIdentifier];
+        return [self removeObjectWithKey:[self propertyValueOf:key inObject:object] andClass:[object class]];
+    } else {
+        @throw [NSException exceptionWithName:NSInternalInconsistencyException
+                                       reason:[NSString stringWithFormat:@"To persist this object, you must implement NFISimplePersistObject protocol and add all required methods."]
+                                     userInfo:nil];
+    }
+}
+
+/**
  *  Remove all objects
  */
 - (BOOL)removeAllObjects {
