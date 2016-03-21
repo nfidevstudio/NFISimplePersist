@@ -35,6 +35,10 @@
 
 #pragma mark - NFISimplePersistObjectProtocol
 
++ (NSString *)uniqueIdentifier {
+    return @"id";
+}
+
 - (NSDictionary *)saveAsDictionary {
     return @{@"user" : _user,
             @"pass" : _pass,

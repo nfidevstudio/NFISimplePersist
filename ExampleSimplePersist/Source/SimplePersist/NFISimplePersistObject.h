@@ -22,4 +22,9 @@
  */
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
+/**
+ * Set the unique identifier of the class
+ */
++ (NSString *)uniqueIdentifier;
+
 @end

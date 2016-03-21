@@ -20,10 +20,22 @@ typedef void (^SaveObjectsCompletionBlock)(BOOL success);
 
 #pragma mark - Persist method
 
+/** 
+ * Persist the object
+ @remark from v0.1.2 of NFISimplePersist
+ */
+- (void)saveObject:(id)object;
+
 /**
  *  Persist the object
  */
-- (void)saveObject:(id)object withKey:(NSString *)key;
+- (void)saveObject:(id)object withKey:(NSString *)key __attribute__((deprecated));
+
+/**
+ * Persist an array of objects.
+ @remark from v0.1.2 of NFISimplePersist
+ */
+- (void)saveObjects:(NSArray *)objects withCompletionBlock:(SaveObjectsCompletionBlock)completionBlock;
 
 /**
  * Persist an array of objects.
@@ -32,7 +44,7 @@ typedef void (^SaveObjectsCompletionBlock)(BOOL success);
  *
  * All the objects will be saved with the same key
  */
-- (void)saveObjects:(NSArray *)objects withPropertyKey:(NSString *)key andCompletionBlock:(SaveObjectsCompletionBlock)completionBlock;
+- (void)saveObjects:(NSArray *)objects withPropertyKey:(NSString *)key andCompletionBlock:(SaveObjectsCompletionBlock)completionBlock  __attribute__((deprecated));
 
 #pragma mark - Load methods
 

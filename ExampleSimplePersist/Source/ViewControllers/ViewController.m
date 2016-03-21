@@ -27,8 +27,8 @@
     User *user1 = [[User alloc] initWithId:@"0" user:@"NFI" andPass:@"no-pass"];
     User *user2 = [[User alloc] initWithId:@"1" user:@"NFI" andPass:@"no-pass"];
     User *user3 = [[User alloc] initWithId:@"2" user:@"NFI" andPass:@"no-pass"];
-
-    [[NFISimplePersist standarSimplePersist] saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withPropertyKey:@"id" andCompletionBlock:^(BOOL success){
+    
+    [[NFISimplePersist standarSimplePersist] saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withCompletionBlock:^(BOOL success){
         NSLog(@"Completed");
         [self updateUsers];
     }];
@@ -52,7 +52,7 @@
 
 - (IBAction)addUser:(id)sender {
     User *user = [[User alloc] initWithId:[NSString stringWithFormat:@"%ld",_users.count] user:@"NFI" andPass:@"no-pass"];
-    [[NFISimplePersist standarSimplePersist] saveObject:user withKey:user.id];
+    [[NFISimplePersist standarSimplePersist] saveObject:user];
     [self updateUsers];
 }
 
