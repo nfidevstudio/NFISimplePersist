@@ -1,4 +1,4 @@
-# NFISimplePersist - v 0.1.1
+# NFISimplePersist - v 0.1.2
 
 ### The best way to persist data into sqlite without problems.
 
@@ -23,7 +23,7 @@ Its mandatory that your entity implements the NFISimplePersistObjectProtocol, li
 
 #pragma mark - Init
 
-- (instancetype)initWithId:(NSInteger)id user:(NSString *)user andPass:(NSString *)pass {
+- (instancetype)initWithId:(NSString *)id user:(NSString *)user andPass:(NSString *)pass {
     self = [super init];
     if (self) {
         _user = user;
@@ -35,10 +35,14 @@ Its mandatory that your entity implements the NFISimplePersistObjectProtocol, li
 
 #pragma mark - NFISimplePersistObjectProtocol
 
++ (NSString *)uniqueIdentifier {
+    return @"id";
+}
+
 - (NSDictionary *)saveAsDictionary {
     return @{@"user" : _user,
             @"pass" : _pass,
-            @"id" : [NSNumber numberWithInteger:_id]
+            @"id" : _id
             };
 }
 
@@ -47,7 +51,7 @@ Its mandatory that your entity implements the NFISimplePersistObjectProtocol, li
     if (self) {
         _user = dictionary[@"user"];
         _pass = dictionary[@"pass"];
-        _id = [dictionary[@"id"] integerValue];
+        _id = dictionary[@"id"];
     }
     return self;
 }
@@ -67,8 +71,8 @@ You can save all kind of entities:
 
 ```objective-c
 NFISimplePersist *persist = [NFISimplePersist standarSimplePersist];
-User *user = [[User alloc] initWithId:1 user:@"NFI" andPass:@"no-pass"];
-[persist saveObject:user withKey:[NSString stringWithFormat:@"%ld",user.id]];
+User *user = [[User alloc] initWithId:@"1" user:@"NFI" andPass:@"no-pass"];
+[persist saveObject:user];
 ```
 
 To get some object:
@@ -101,8 +105,7 @@ User *user1 = [[User alloc] initWithId:@"0" user:@"NFI1" andPass:@"no-pass"];
 User *user2 = [[User alloc] initWithId:@"1" user:@"NFI2" andPass:@"no-pass"];
 User *user3 = [[User alloc] initWithId:@"2" user:@"NFI3" andPass:@"no-pass"];
 
-[persist saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withPropertyKey:@"id" 
-andCompletionBlock:^(BOOL success){
+[persist saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withCompletionBlock:^(BOOL success){
         NSLog(@"Completed");
 }];
 ```

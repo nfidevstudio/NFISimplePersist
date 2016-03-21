@@ -18,6 +18,10 @@ typedef void (^SaveObjectsCompletionBlock)(BOOL success);
  */
 + (instancetype)standarSimplePersist;
 
+/** Custom Simple Persist instance
+ */
+- (instancetype)initWithSimplePersistName:(NSString *)name;
+
 #pragma mark - Persist method
 
 /** 

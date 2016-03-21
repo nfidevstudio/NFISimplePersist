@@ -12,7 +12,7 @@
 #import <objc/runtime.h>
 #import <sqlite3.h>
 
-NSString * const kDBName = @"NFISimplePersist.db";
+NSString * const kCustomDBName = @"NFISimplePersist.db";
 NSString * const kCreatePersistTable = @"CREATE TABLE persistedObjects (key TEXT NOT NULL, object BLOB, class TEXT NOT NULL, PRIMARY KEY (key, class))";
 NSString * const kTableExist = @"SELECT name FROM sqlite_master WHERE type='table' AND name='persistedObjects'";
 NSString * const kInsert = @"INSERT INTO persistedObjects VALUES(?, ?, ?);";
@@ -46,10 +46,10 @@ NSString * const kKey = @"key";
 /**
  *  Load the DB
  */
-- (void)loadDB {
+- (void)loadDBWithName:(NSString *)name {
     NSArray *dirPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *docsDir = [dirPaths objectAtIndex:0];
-    _databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: kDBName]];
+    _databasePath = [[NSString alloc] initWithString: [docsDir stringByAppendingPathComponent: [name isEqualToString:kCustomDBName] ? kCustomDBName : [NSString stringWithFormat:@"%@.db",name]]];
     NSFileManager *filemgr = [NSFileManager defaultManager];
     if ([filemgr fileExistsAtPath: _databasePath ] == NO) {
         const char *dbpath = [_databasePath UTF8String];
@@ -105,10 +105,19 @@ NSString * const kKey = @"key";
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedInstance = [[NFISimplePersist alloc] init];
-        [_sharedInstance loadDB];
+        [_sharedInstance loadDBWithName:kCustomDBName];
     });
     return _sharedInstance;
+}
 
+/** Custom Simple Persist instance
+ */
+- (instancetype)initWithSimplePersistName:(NSString *)name {
+    self = [super init];
+    if (self) {
+        [self loadDBWithName:name];
+    }
+    return self;
 }
 
 #pragma mark - Persist method
