@@ -24,9 +24,9 @@
     [super viewDidLoad];
     _users = [[[NFISimplePersist standarSimplePersist] loadAllObjectsWithClass:[User class]] mutableCopy];
     
-    User *user1 = [[User alloc] initWithId:@"0" user:@"NFI" andPass:@"no-pass"];
-    User *user2 = [[User alloc] initWithId:@"1" user:@"NFI" andPass:@"no-pass"];
-    User *user3 = [[User alloc] initWithId:@"2" user:@"NFI" andPass:@"no-pass"];
+    User *user1 = [[User alloc] initWithIdentifier:0 user:@"NFI" andPass:@"no-pass"];
+    User *user2 = [[User alloc] initWithIdentifier:1 user:@"NFI" andPass:@"no-pass"];
+    User *user3 = [[User alloc] initWithIdentifier:2 user:@"NFI" andPass:@"no-pass"];
     
     [[NFISimplePersist standarSimplePersist] saveObjects:[NSArray arrayWithObjects:user1, user2, user3, nil] withCompletionBlock:^(BOOL success){
         NSLog(@"Completed");
@@ -51,7 +51,7 @@
 #pragma mark - Actions
 
 - (IBAction)addUser:(id)sender {
-    User *user = [[User alloc] initWithId:[NSString stringWithFormat:@"%ld",_users.count] user:@"NFI" andPass:@"no-pass"];
+    User *user = [[User alloc] initWithIdentifier:_users.count user:@"NFI" andPass:@"no-pass"];
     [[NFISimplePersist standarSimplePersist] saveObject:user];
     [self updateUsers];
 }
@@ -92,7 +92,7 @@
     }
     
     User *user = [_users objectAtIndex:indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@: %@",user.user, user.id];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@: %ld",user.user, user.identifier];
     return cell;
 }
 

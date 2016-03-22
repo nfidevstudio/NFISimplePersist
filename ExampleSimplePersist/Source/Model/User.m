@@ -13,12 +13,14 @@
 
 #pragma mark - Init
 
-- (instancetype)initWithId:(NSString *)id user:(NSString *)user andPass:(NSString *)pass {
+- (instancetype)initWithIdentifier:(NSInteger)identifier
+                              user:(NSString *)user
+                           andPass:(NSString *)pass {
     self = [super init];
     if (self) {
         _user = user;
         _pass = pass;
-        _id = id;
+        _identifier = identifier;
     }
     return self;
 }
@@ -36,13 +38,13 @@
 #pragma mark - NFISimplePersistObjectProtocol
 
 + (NSString *)uniqueIdentifier {
-    return @"id";
+    return @"identifier";
 }
 
 - (NSDictionary *)saveAsDictionary {
     return @{@"user" : _user,
             @"pass" : _pass,
-            @"id" : _id
+            @"identifier" : [NSNumber numberWithInteger: _identifier]
             };
 }
 
@@ -51,7 +53,7 @@
     if (self) {
         _user = dictionary[@"user"];
         _pass = dictionary[@"pass"];
-        _id = dictionary[@"id"];
+        _identifier = [dictionary[@"identifier"] integerValue];
     }
     return self;
 }

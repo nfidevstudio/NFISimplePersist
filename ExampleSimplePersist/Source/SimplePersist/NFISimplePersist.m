@@ -85,11 +85,11 @@ NSString * const kKey = @"key";
 }
 
 - (NSString *)propertyValueOf:(NSString *)propertyString inObject:(id)object {
-    if ([[object valueForKey:propertyString] isKindOfClass:[NSString class]]) {
+    if ([[object valueForKey:propertyString] isKindOfClass:[NSString class]] || [[object valueForKey:propertyString] isKindOfClass:[NSNumber class]]) {
         return [object valueForKey:propertyString];
     } else {
         @throw [NSException exceptionWithName:NSInternalInconsistencyException
-                                       reason:[NSString stringWithFormat:@"The property key of some object is not a NSString."]
+                                       reason:[NSString stringWithFormat:@"The property key of the object must be a NSString or a NSNumber (include NSInteger, long, float...)."]
                                      userInfo:nil];
     }
 }
@@ -129,8 +129,10 @@ NSString * const kKey = @"key";
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         if ([object respondsToSelector:@selector(saveAsDictionary)]) {
             if ([[object class] respondsToSelector:@selector(uniqueIdentifier)]) {
-                NSString *key = [[object class] uniqueIdentifier];
-                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:key inObject:object]]
+                NSString *keyProperty = [[object class] uniqueIdentifier];
+                id propertyValue = [self propertyValueOf:keyProperty inObject:object];
+                NSString *key = [propertyValue isKindOfClass:[NSString class]] ? [self propertyValueOf:keyProperty inObject:object] : [NSString stringWithFormat:@"%@",[self propertyValueOf:keyProperty inObject:object]];
+                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:keyProperty inObject:object]]
                                                                          forKeys:@[kClass, kObject, kKey]];
                 NSString *class = dictToSave[kClass];
                 NSDictionary *object = dictToSave[kObject];
@@ -166,8 +168,11 @@ NSString * const kKey = @"key";
         for (id object in objects) {
             if ([object respondsToSelector:@selector(saveAsDictionary)]) {
                 if ([[object class] respondsToSelector:@selector(uniqueIdentifier)]) {
-                    NSString *key = [[object class] uniqueIdentifier];
-                    NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:key inObject:object]] forKeys:@[kClass, kObject, kKey]];
+                    NSString *keyProperty = [[object class] uniqueIdentifier];
+                    id propertyValue = [self propertyValueOf:keyProperty inObject:object];
+                    NSString *key = [propertyValue isKindOfClass:[NSString class]] ? [self propertyValueOf:keyProperty inObject:object] : [NSString stringWithFormat:@"%@",[self propertyValueOf:keyProperty inObject:object]];
+                    NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:keyProperty inObject:object]]
+                                                                             forKeys:@[kClass, kObject, kKey]];
                     NSString *class = dictToSave[kClass];
                     NSDictionary *object = dictToSave[kObject];
                     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
@@ -176,7 +181,7 @@ NSString * const kKey = @"key";
                     if(sqlite3_prepare_v2(_database, [kInsert UTF8String], -1, &updateStmt, NULL) != SQLITE_OK)  {
                         NSAssert1(0, @"Error while saving multiple objects. '%s'", sqlite3_errmsg(_database));
                     } else {
-                        sqlite3_bind_text(updateStmt, 1, [[self propertyValueOf:key inObject:object] UTF8String], -1, SQLITE_TRANSIENT);
+                        sqlite3_bind_text(updateStmt, 1, [key UTF8String], -1, SQLITE_TRANSIENT);
                         sqlite3_bind_blob(updateStmt, 2, [data bytes], (int)[data length], SQLITE_TRANSIENT);
                         sqlite3_bind_text(updateStmt, 3, [class UTF8String], -1, SQLITE_TRANSIENT);
                         sqlite3_step(updateStmt);

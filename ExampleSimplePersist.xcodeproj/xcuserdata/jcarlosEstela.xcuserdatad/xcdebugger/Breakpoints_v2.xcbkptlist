@@ -42,12 +42,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ExampleSimplePersist/Source/SimplePersist/NFISimplePersist.m"
-            timestampString = "480280767.152097"
+            timestampString = "480334895.473714"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
-            landmarkName = "-removeObjectWithKey:andClass:"
+            startingLineNumber = "346"
+            endingLineNumber = "346"
+            landmarkName = "-removeAllObjects"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ExampleSimplePersist/Source/SimplePersist/NFISimplePersist.m"
+            timestampString = "480334915.192348"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "-propertyValueOf:inObject:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
