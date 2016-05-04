@@ -1,4 +1,4 @@
-# NFISimplePersist - v 0.1.2
+# NFISimplePersist - v 0.1.3
 
 ### The best way to persist data into sqlite without problems.
 
