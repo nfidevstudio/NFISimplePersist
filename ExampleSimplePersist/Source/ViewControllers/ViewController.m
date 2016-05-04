@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import "User.h"
 #import "NFISimplePersist.h"
+#import "Person.h"
+#import "Animal.h"
 
 @interface ViewController () <UITableViewDataSource, UITableViewDelegate>
 
@@ -32,6 +34,10 @@
         NSLog(@"Completed");
         [self updateUsers];
     }];
+    
+    NSLog(@"User: %@", [[NFISimplePersist standarSimplePersist] superClassesOfClass:[User class]]);
+    NSLog(@"Person: %@", [[NFISimplePersist standarSimplePersist] superClassesOfClass:[Person class]]);
+    NSLog(@"Animal: %@", [[NFISimplePersist standarSimplePersist] superClassesOfClass:[Animal class]]);
 }
 
 - (void)viewDidAppear:(BOOL)animated {

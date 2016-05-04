@@ -69,5 +69,9 @@ typedef void (^SaveObjectsCompletionBlock)(BOOL success);
  */
 - (BOOL)removeAllObjects;
 
+
+
+- (NSArray *)superClassesOfClass:(Class)class;
+
 @end
 
