@@ -161,12 +161,11 @@ NSString * const kKey = @"key";
 - (void)saveObject:(id)object {
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         if ([object respondsToSelector:@selector(saveAsDictionary)]) {
-<<<<<<< HEAD
             if ([[object class] respondsToSelector:@selector(uniqueIdentifier)]) {
                 NSString *keyProperty = [[object class] uniqueIdentifier];
                 id propertyValue = [self propertyValueOf:keyProperty inObject:object];
                 NSString *key = [propertyValue isKindOfClass:[NSString class]] ? [self propertyValueOf:keyProperty inObject:object] : [NSString stringWithFormat:@"%@",[self propertyValueOf:keyProperty inObject:object]];
-                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:keyProperty inObject:object]]
+                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], [self propertyValueOf:keyProperty inObject:object]]
                                                                          forKeys:@[kClass, kObject, kKey]];
                 NSString *class = dictToSave[kClass];
                 NSDictionary *object = dictToSave[kObject];
@@ -183,18 +182,6 @@ NSString * const kKey = @"key";
                 }
                 sqlite3_reset(updateStmt);
                 sqlite3_finalize(updateStmt);
-=======
-            
-            NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], key]
-                                                                     forKeys:@[kClass, kObject, kKey]];
-            NSString *class = dictToSave[kClass];
-            NSDictionary *object = dictToSave[kObject];
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
-            
-            sqlite3_stmt *updateStmt = nil;
-            if(sqlite3_prepare_v2(_database, [kInsert UTF8String], -1, &updateStmt, NULL) != SQLITE_OK)  {
-                NSAssert1(0, @"Error while creating save statement. '%s'", sqlite3_errmsg(_database));
->>>>>>> develop
             } else {
                 @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                                reason:[NSString stringWithFormat:@"To persist this object, you must implement NFISimplePersistObject protocol and add all required methods."]
@@ -213,12 +200,11 @@ NSString * const kKey = @"key";
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         for (id object in objects) {
             if ([object respondsToSelector:@selector(saveAsDictionary)]) {
-<<<<<<< HEAD
                 if ([[object class] respondsToSelector:@selector(uniqueIdentifier)]) {
                     NSString *keyProperty = [[object class] uniqueIdentifier];
                     id propertyValue = [self propertyValueOf:keyProperty inObject:object];
                     NSString *key = [propertyValue isKindOfClass:[NSString class]] ? [self propertyValueOf:keyProperty inObject:object] : [NSString stringWithFormat:@"%@",[self propertyValueOf:keyProperty inObject:object]];
-                    NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:keyProperty inObject:object]]
+                    NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], [self propertyValueOf:keyProperty inObject:object]]
                                                                              forKeys:@[kClass, kObject, kKey]];
                     NSString *class = dictToSave[kClass];
                     NSDictionary *object = dictToSave[kObject];
@@ -235,16 +221,6 @@ NSString * const kKey = @"key";
                     }
                     sqlite3_reset(updateStmt);
                     sqlite3_finalize(updateStmt);
-=======
-                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], [self propertyValueOf:key inObject:object]] forKeys:@[kClass, kObject, kKey]];
-                NSString *class = dictToSave[kClass];
-                NSDictionary *object = dictToSave[kObject];
-                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
-                
-                sqlite3_stmt *updateStmt = nil;
-                if(sqlite3_prepare_v2(_database, [kInsert UTF8String], -1, &updateStmt, NULL) != SQLITE_OK)  {
-                    NSAssert1(0, @"Error while saving multiple objects. '%s'", sqlite3_errmsg(_database));
->>>>>>> develop
                 } else {
                     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                                    reason:[NSString stringWithFormat:@"To persist this object, you must implement NFISimplePersistObject protocol and add all required methods."]
