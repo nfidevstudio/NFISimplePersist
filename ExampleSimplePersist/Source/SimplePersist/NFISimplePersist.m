@@ -19,11 +19,11 @@ NSString * const kInsert = @"INSERT INTO persistedObjects VALUES(?, ?, ?);";
 NSString * const kCountFields = @"SELECT COUNT(*) FROM persistedObjects";
 
 NSString * const kLoadAll = @"SELECT * FROM persistedObjects";
-NSString * const kLoadWithKeyAndClass = @"SELECT * FROM persistedObjects WHERE key like '%@' AND class like '%@'";
-NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '%@'";
+NSString * const kLoadWithKeyAndClass = @"SELECT * FROM persistedObjects WHERE key like '%@' AND class like '(%@)'";
+NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '(%@)'";
 
-NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class like '%@'";
-NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key like '%@' AND class like '%@'";
+NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class like '(%@)'";
+NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key like '%@' AND class like '(%@)'";
 NSString * const kDeleteAll = @"DELETE FROM persistedObjects";
 
 NSString * const kClass = @"class";
@@ -94,6 +94,39 @@ NSString * const kKey = @"key";
     }
 }
 
+- (NSArray *)superClassesOfClass:(Class)class {
+    NSMutableArray *classes = [NSMutableArray new];
+    [classes addObject:class];
+    if ([class superclass] == [NSObject class]) {
+        return classes;
+    } else {
+        for (Class c in [self superClassesOfClass:[class superclass]]) {
+            [classes addObject:c];
+        }
+        return classes;
+    }
+}
+
+- (NSString *)stringClassesOfClass:(Class)class {
+    NSArray *classes = [self superClassesOfClass:class];
+    NSMutableString *classesString = [NSMutableString string];
+    for (Class c in classes) {
+        [classesString appendString:@"("];
+        [classesString appendString:NSStringFromClass(c)];
+        [classesString appendString:@")"];
+    }
+    return classesString;
+}
+
+- (NSArray *)classesOfString:(NSString *)classes {
+    NSMutableArray *classesArray = [NSMutableArray new];
+    for (NSString *c in [classes componentsSeparatedByString:@")("]) {
+        NSString *class = [[c stringByReplacingOccurrencesOfString:@"(" withString:@""] stringByReplacingOccurrencesOfString:@")" withString:@""];
+        [classesArray addObject:class];
+    }
+    return classesArray;
+}
+
 #pragma mark - Public Methods.
 #pragma mark -
 #pragma mark - Instance.
@@ -128,6 +161,7 @@ NSString * const kKey = @"key";
 - (void)saveObject:(id)object {
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         if ([object respondsToSelector:@selector(saveAsDictionary)]) {
+<<<<<<< HEAD
             if ([[object class] respondsToSelector:@selector(uniqueIdentifier)]) {
                 NSString *keyProperty = [[object class] uniqueIdentifier];
                 id propertyValue = [self propertyValueOf:keyProperty inObject:object];
@@ -149,6 +183,18 @@ NSString * const kKey = @"key";
                 }
                 sqlite3_reset(updateStmt);
                 sqlite3_finalize(updateStmt);
+=======
+            
+            NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], key]
+                                                                     forKeys:@[kClass, kObject, kKey]];
+            NSString *class = dictToSave[kClass];
+            NSDictionary *object = dictToSave[kObject];
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
+            
+            sqlite3_stmt *updateStmt = nil;
+            if(sqlite3_prepare_v2(_database, [kInsert UTF8String], -1, &updateStmt, NULL) != SQLITE_OK)  {
+                NSAssert1(0, @"Error while creating save statement. '%s'", sqlite3_errmsg(_database));
+>>>>>>> develop
             } else {
                 @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                                reason:[NSString stringWithFormat:@"To persist this object, you must implement NFISimplePersistObject protocol and add all required methods."]
@@ -167,6 +213,7 @@ NSString * const kKey = @"key";
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         for (id object in objects) {
             if ([object respondsToSelector:@selector(saveAsDictionary)]) {
+<<<<<<< HEAD
                 if ([[object class] respondsToSelector:@selector(uniqueIdentifier)]) {
                     NSString *keyProperty = [[object class] uniqueIdentifier];
                     id propertyValue = [self propertyValueOf:keyProperty inObject:object];
@@ -188,6 +235,16 @@ NSString * const kKey = @"key";
                     }
                     sqlite3_reset(updateStmt);
                     sqlite3_finalize(updateStmt);
+=======
+                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], [self propertyValueOf:key inObject:object]] forKeys:@[kClass, kObject, kKey]];
+                NSString *class = dictToSave[kClass];
+                NSDictionary *object = dictToSave[kObject];
+                NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
+                
+                sqlite3_stmt *updateStmt = nil;
+                if(sqlite3_prepare_v2(_database, [kInsert UTF8String], -1, &updateStmt, NULL) != SQLITE_OK)  {
+                    NSAssert1(0, @"Error while saving multiple objects. '%s'", sqlite3_errmsg(_database));
+>>>>>>> develop
                 } else {
                     @throw [NSException exceptionWithName:NSInternalInconsistencyException
                                                    reason:[NSString stringWithFormat:@"To persist this object, you must implement NFISimplePersistObject protocol and add all required methods."]
@@ -222,7 +279,8 @@ NSString * const kKey = @"key";
                 int size = sqlite3_column_bytes(statement, 1);
                 char *classDB = (char *) sqlite3_column_text(statement, 2);
                 
-                NSString *class = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *classes = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *class = [self classesOfString:classes][0];
                 NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
                 NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
                 
@@ -236,6 +294,7 @@ NSString * const kKey = @"key";
                 [objects addObject:[self objectFromDictionary:object]];
             }
             sqlite3_finalize(statement);
+            sqlite3_close(_database);
         } else {
             NSAssert1(0, @"Error loading all objects. '%s'", sqlite3_errmsg(_database));
         }
@@ -260,7 +319,8 @@ NSString * const kKey = @"key";
                 int size = sqlite3_column_bytes(statement, 1);
                 char *classDB = (char *) sqlite3_column_text(statement, 2);
                 
-                NSString *class = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *classes = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *class = [self classesOfString:classes][0];
                 NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
                 NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
                 
@@ -299,7 +359,8 @@ NSString * const kKey = @"key";
                 int size = sqlite3_column_bytes(statement, 1);
                 char *classDB = (char *) sqlite3_column_text(statement, 2);
                 
-                NSString *class = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *classes = [[NSString alloc] initWithUTF8String:classDB];
+                NSString *class = [self classesOfString:classes][0];
                 NSString *key = [[NSString alloc] initWithUTF8String:keyDB];
                 NSData *data = [[NSData alloc] initWithBytes:ptr length:size];
                 

@@ -10,6 +10,8 @@
 		2C608AD41C73A7FB0078A493 /* NFIEncode.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C608AD31C73A7FB0078A493 /* NFIEncode.m */; };
 		2CA7E4661C724EB000A9EF2E /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CA7E4651C724EB000A9EF2E /* User.m */; };
 		2CA7E4681C72508200A9EF2E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */; };
+		2CC095B61CDA51C900710F19 /* Person.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC095B51CDA51C900710F19 /* Person.m */; };
+		2CC095B91CDA569F00710F19 /* Animal.m in Sources */ = {isa = PBXBuildFile; fileRef = 2CC095B81CDA569F00710F19 /* Animal.m */; };
 		F2E26E531C71F569003AF54D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E521C71F569003AF54D /* main.m */; };
 		F2E26E561C71F569003AF54D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E551C71F569003AF54D /* AppDelegate.m */; };
 		F2E26E591C71F569003AF54D /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F2E26E581C71F569003AF54D /* ViewController.m */; };
@@ -45,6 +47,10 @@
 		2CA7E4651C724EB000A9EF2E /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		2CA7E4671C72508200A9EF2E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		2CA7E46A1C7255BB00A9EF2E /* NFISimplePersistObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NFISimplePersistObject.h; sourceTree = "<group>"; };
+		2CC095B41CDA51C900710F19 /* Person.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Person.h; sourceTree = "<group>"; };
+		2CC095B51CDA51C900710F19 /* Person.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Person.m; sourceTree = "<group>"; };
+		2CC095B71CDA569F00710F19 /* Animal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Animal.h; sourceTree = "<group>"; };
+		2CC095B81CDA569F00710F19 /* Animal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Animal.m; sourceTree = "<group>"; };
 		F2E26E4E1C71F569003AF54D /* ExampleSimplePersist.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSimplePersist.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F2E26E521C71F569003AF54D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F2E26E541C71F569003AF54D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -159,6 +165,10 @@
 			children = (
 				2CA7E4641C724EB000A9EF2E /* User.h */,
 				2CA7E4651C724EB000A9EF2E /* User.m */,
+				2CC095B41CDA51C900710F19 /* Person.h */,
+				2CC095B51CDA51C900710F19 /* Person.m */,
+				2CC095B71CDA569F00710F19 /* Animal.h */,
+				2CC095B81CDA569F00710F19 /* Animal.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -366,8 +376,10 @@
 			files = (
 				2C608AD41C73A7FB0078A493 /* NFIEncode.m in Sources */,
 				2CA7E4661C724EB000A9EF2E /* User.m in Sources */,
+				2CC095B61CDA51C900710F19 /* Person.m in Sources */,
 				F2E26E591C71F569003AF54D /* ViewController.m in Sources */,
 				F2E26E561C71F569003AF54D /* AppDelegate.m in Sources */,
+				2CC095B91CDA569F00710F19 /* Animal.m in Sources */,
 				F2E26E871C71F59D003AF54D /* NFISimplePersist.m in Sources */,
 				F2E26E531C71F569003AF54D /* main.m in Sources */,
 			);
