@@ -19,11 +19,11 @@ NSString * const kInsert = @"INSERT INTO persistedObjects VALUES(?, ?, ?);";
 NSString * const kCountFields = @"SELECT COUNT(*) FROM persistedObjects";
 
 NSString * const kLoadAll = @"SELECT * FROM persistedObjects";
-NSString * const kLoadWithKeyAndClass = @"SELECT * FROM persistedObjects WHERE key like '%@' AND class like '(%@)'";
-NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '(%@)'";
+NSString * const kLoadWithKeyAndClass = @"SELECT * FROM persistedObjects WHERE key like '%@' AND class like '%(%@)%'";
+NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '%(%@)%'";
 
-NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class like '(%@)'";
-NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key like '%@' AND class like '(%@)'";
+NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class like '%(%@)%'";
+NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key like '%@' AND class like '%(%@)%'";
 NSString * const kDeleteAll = @"DELETE FROM persistedObjects";
 
 NSString * const kClass = @"class";
@@ -422,7 +422,7 @@ NSString * const kKey = @"key";
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         if ([object respondsToSelector:@selector(saveAsDictionary)]) {
             
-            NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], key]
+            NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], key]
                                                                      forKeys:@[kClass, kObject, kKey]];
             NSString *class = dictToSave[kClass];
             NSDictionary *object = dictToSave[kObject];
@@ -460,7 +460,7 @@ NSString * const kKey = @"key";
     if (sqlite3_open([_databasePath UTF8String], &_database) == SQLITE_OK) {
         for (id object in objects) {
             if ([object respondsToSelector:@selector(saveAsDictionary)]) {
-                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[NSStringFromClass([object class]), [object saveAsDictionary], [self propertyValueOf:key inObject:object]] forKeys:@[kClass, kObject, kKey]];
+                NSDictionary *dictToSave = [[NSDictionary alloc] initWithObjects:@[[self stringClassesOfClass:[object class]], [object saveAsDictionary], [self propertyValueOf:key inObject:object]] forKeys:@[kClass, kObject, kKey]];
                 NSString *class = dictToSave[kClass];
                 NSDictionary *object = dictToSave[kObject];
                 NSData *data = [NSKeyedArchiver archivedDataWithRootObject:object];
