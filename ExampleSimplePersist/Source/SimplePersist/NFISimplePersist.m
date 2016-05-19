@@ -19,11 +19,11 @@ NSString * const kInsert = @"INSERT INTO persistedObjects VALUES(?, ?, ?);";
 NSString * const kCountFields = @"SELECT COUNT(*) FROM persistedObjects";
 
 NSString * const kLoadAll = @"SELECT * FROM persistedObjects";
-NSString * const kLoadWithKeyAndClass = @"SELECT * FROM persistedObjects WHERE key like '%@' AND class like '%(%@)%'";
-NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '%(%@)%'";
+NSString * const kLoadWithKeyAndClass = @"SELECT * FROM persistedObjects WHERE key like '%@' AND class like '%%(%@)%%'";
+NSString * const kLoadWithClass = @"SELECT * FROM persistedObjects WHERE class like '%%(%@)%%'";
 
-NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class like '%(%@)%'";
-NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key like '%@' AND class like '%(%@)%'";
+NSString * const kDeleteWithClass = @"DELETE FROM persistedObjects WHERE class like '%%(%@)%%'";
+NSString * const kDeleteWithKey = @"DELETE FROM persistedObjects WHERE key like '%@' AND class like '%%(%@)%%'";
 NSString * const kDeleteAll = @"DELETE FROM persistedObjects";
 
 NSString * const kClass = @"class";
